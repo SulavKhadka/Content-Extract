@@ -7,6 +7,7 @@ from dateutil.parser import parse
 
 
 def time_date_ext(sentence):
+    ''' Find Dates and Times '''
     datetime_keyword_lst =(':','today','tomorrow','yesterday','am','a.m','a.m.','pm','p.m','p.m.','january','february','march','april','may','june','july','august','september','october','november','december')
     try:
         for keyword in datetime_keyword_lst:
@@ -32,6 +33,7 @@ def time_date_ext(sentence):
         return "None"
 
 def email_ext(sentence):
+    ''' Find Email Adresses '''
     expression = re.compile(r"(\S+)@(\S+)")
     result = expression.findall(sentence)
     if result != []:
@@ -40,6 +42,7 @@ def email_ext(sentence):
         return "None"
     
 def phone_num_ext(sentence):
+    ''' Find Phone Numbers '''
     reg = re.compile(".*?(\(?\d{3}\D{0,3}\d{3}\D{0,3}\d{4}).*?", re.S)
     num = reg.findall(sentence)
     parsed_phnumbers = []
@@ -55,6 +58,7 @@ def phone_num_ext(sentence):
         return "None"
 
 def names_ext(sentence):
+    ''' Extracts Names using first_name_search and last_name_search '''
     sentence = TextBlob(sentence)
     possible_names = sentence.noun_phrases
     print "NOUN PHRASES: ", possible_names
@@ -75,9 +79,11 @@ def names_ext(sentence):
     return "None"
 
 def first_name_search(name_candidate, name_list):
+    ''' Looks for the first name in the name list '''
     return name_candidate.lower() in name_list
 
 def last_name_search(name_candidate, name_list):
+    ''' Looks for the last name in the name list '''
     last_names = []
     for name in name_list:
         if name_candidate.lower() == name.strip().lower():
@@ -88,6 +94,7 @@ def last_name_search(name_candidate, name_list):
         return "None"
 
 def main():
+    ''' Extract Data from a given body of text '''
     sentence = enterbox("Please enter a sentence to parse").lower()
     SKtime_date = time_date_ext(sentence)
     if SKtime_date != "None":
